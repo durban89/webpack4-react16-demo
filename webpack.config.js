@@ -2,12 +2,11 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
-module.exports = {
-  mode: 'development',
+let config = {
+  mode: 'production',
   entry: {
     app: ['./src/index.jsx'],
   },
-  devtool: 'eval',
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
     compress: true,
@@ -75,3 +74,16 @@ module.exports = {
     extensions: ['.js', '.jsx'], // 这里是必须要加的，不然默认的值加载['.js','.json']为后缀的文件
   },
 };
+
+if (process.env.NODE_ENV === 'production') {
+  config = Object.assign({}, config, {
+    mode: 'production',
+  });
+} else {
+  config = Object.assign({}, config, {
+    mode: 'development',
+    devtool: 'eval',
+  });
+}
+
+module.exports = config;
